@@ -1,14 +1,22 @@
-import MusicMaster.songs;
+import MusicMaster.*
 
 fun main() {
-    addSong("disillusioned - a perfect circle", songs);
-    addSong("stranger - a perfect circle", songs);
-    addSong("blackbird song - Lee DeWyze", songs);
-    shuffleSong(songs)
-    playAll(songs);
+    val songs = mutableListOf(
+        Song(title="Disillusioned", artist =  "a perfect circle"),
+        Song(title="Stranger",  artist="a perfect circle"),
+        Song(title="Blackbird song", artist="Lee DeWyze")
+    );
+    val playList = PlayList(songs);
+    playList.addSong("one", "metallica");
+    playList.shuffleSong();
+    playList.removeSong("Blackbird song");
+    playList.showPlayList();
+    playList.playAll();
 
+    val aPerfectCirclePlayList = playList.filterByArtist("perfect circle");
+    aPerfectCirclePlayList.showPlayList();
+    aPerfectCirclePlayList.removeSong(1)
+    aPerfectCirclePlayList.showPlayList();
+    aPerfectCirclePlayList.playAll();
 }
 
-val playAll = { songs: MutableList<String> -> songs.forEach { println(it) }};
-val addSong = { song: String, playlist: MutableList<String> -> playlist.add(song) }
-val shuffleSong = { playList: MutableList<String> ->  playList.shuffle() }
