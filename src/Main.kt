@@ -1,3 +1,7 @@
+import MusicMaster.*
+
 fun main() {
-    println("Hello World!")
+    val app = MusicApp();
+    app.run()
 }
+
