@@ -1,8 +1,28 @@
 package MusicMaster
 
 class PlayList(var songs: MutableList<Song>) {
-    val playAll: () -> Unit = { songs.forEach { println("Playing: $it") } }
-    val addSong = { title: String, artist: String -> songs.add(Song(title, artist)) }
+    var activeSong: Song? = null
+    private var songsIterator: MutableIterator<Song> = songs.iterator()
+
+    val playAll: () -> Unit = {
+        if (songs.isEmpty()) {
+            println("[!] Playlist is empty... add a song")
+        }
+        playNext()
+        println("Playing: $activeSong")
+    }
+
+    private fun playNext() {
+        if (songsIterator.hasNext()) {
+            activeSong = songsIterator.next()
+        } else {
+            println("[!] Playlist finished")
+        }
+    }
+
+    val addSong = { title: String, artist: String ->
+        songs.add(Song(title, artist))
+    }
     val shuffleSong = {  songs.shuffle() }
     val filterByArtist = { artist: String ->
         PlayList(songs.filter {
@@ -21,7 +41,7 @@ class PlayList(var songs: MutableList<Song>) {
     }
 
     fun removeSong(title: String): Boolean {
-        if (songs.size == 0 ) return false
+        if (songs.isEmpty()) return false
 
         val kSearchTerm = title.lowercase()
         var found = false
@@ -41,7 +61,7 @@ class PlayList(var songs: MutableList<Song>) {
     // starting from number 1 onwards, i.e. @param position 1 == index 0
     fun removeSong(position: Int): Boolean {
         if (position <= 0) return false;
-        if (songs.size == 0) return false;
+        if (songs.isEmpty()) return false;
         if (songs.size - 1 < position) return false;
 
         songs.removeAt(position - 1)
